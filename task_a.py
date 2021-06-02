@@ -1,46 +1,49 @@
 import requests
-
-URL = 'https://petstore.swagger.io/v2/'
-
-
-def create_user():
-    user = {
-        "id": 999999,
-        "username": "sqrlyy",
-        "firstName": "unknown",
-        "lastName": "unknown",
-        "email": "unknown",
-        "password": "unknown",
-        "phone": "unknown",
-        "userStatus": 0
-    }
-    request = requests.post(f'{URL}user', json=user)
-    assert request.status_code == 200
+import unittest
 
 
-def get_user():
-    username = 'sqrlyy'
-    request = requests.get(f'{URL}user/{username}')
-    assert request.status_code == 200
+class SwaggerCrudTest(unittest.TestCase):
+    URL = 'https://petstore.swagger.io/v2/'
+
+    def test_create_user(self):
+        user = {
+            "id": 9999912,
+            "username": "sqrlyy",
+            "firstName": "unknown",
+            "lastName": "unknown",
+            "email": "unknown",
+            "password": "unknown",
+            "phone": "unknown",
+            "userStatus": 0
+        }
+        request = requests.post(f'{self.URL}user', json=user)
+        self.assertEqual(request.status_code, 200)
+
+    def test_get_user(self):
+        username = 'sqrlyy'
+        request = requests.get(f'{self.URL}user/{username}')
+        self.assertEqual(request.status_code, 200)
+
+    def test_update_user(self):
+        username = 'sqrlyy'
+        user = {
+            "id": 9999912,
+            "username": "sqrl",
+            "firstName": "Maks",
+            "lastName": "Posokhov",
+            "email": "unknown",
+            "password": "unknown",
+            "phone": "unknown",
+            "userStatus": 0
+        }
+        request = requests.put(f'{self.URL}user/{username}', json=user)
+        self.assertEqual(request.status_code, 200)
+
+    def test_delete_user(self):
+        username = 'sqrl'
+        request = requests.delete(f'{self.URL}user/{username}')
+        self.assertEqual(request.status_code, 200)
 
 
-def update_user():
-    username = 'sqrlyy'
-    user = {
-        "id": 999999,
-        "username": "sqrl",
-        "firstName": "Maks",
-        "lastName": "Posokhov",
-        "email": "unknown",
-        "password": "unknown",
-        "phone": "unknown",
-        "userStatus": 0
-    }
-    request = requests.put(f'{URL}user/{username}', json=user)
-    assert request.status_code == 200
-
-
-def delete_user():
-    username = 'sqrl'
-    request = requests.delete(f'{URL}user/{username}')
-    assert request.status_code == 200
+if __name__ == '__main__':
+    unittest.main()
